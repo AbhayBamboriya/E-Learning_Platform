@@ -1,11 +1,22 @@
 // // models/User.js
 import mysql from 'mysql';
+import {config} from 'dotenv'
+config()
+
 // Database connection configuration
+console.log(process.env.DB_HOST)
+console.log(process.env.DB_PASSWORD);
+console.log(process.env.DB_USER);
+console.log(process.env.DB_NAME);
+
+
+;
+
 const dbConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: 'Root@1212#*',
-  database: 'project',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database:process.env.DB_NAME,
 };
 
 // Function to create a new database connection

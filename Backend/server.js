@@ -1,6 +1,6 @@
 import app from './app.js'
 import {config} from 'dotenv'
-import con from './config/dbconnection.js'
+// import con from './config/dbconnection.js'
 // import con from './config/dbConnection.js'
 // import cloudinary from 'cloudinary'
 config()
@@ -13,7 +13,5 @@ const PORT=process.env.PORT||5000
 // })
 
 app.listen(PORT,async()=>{
-    // await connectionToDB()
-    await con();
     console.log(`App is runnig at http:localhost:${PORT}`);
 })
