@@ -31,6 +31,16 @@ connection.connect((err) => {
   }
 });
 
+connection.query('SELECT * FROM users', (err, results) => {
+  if (err) {
+    reject(err);
+  } else {
+    // resolve(results);
+    console.log(results);
+    
+  }
+});
+
 // User Model with CRUD functions
 const User = {
   // Function to get all users

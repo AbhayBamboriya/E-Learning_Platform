@@ -4,7 +4,7 @@ import {config} from 'dotenv'
 // import con from './config/dbConnection.js'
 // import cloudinary from 'cloudinary'
 config()
-const PORT=process.env.PORT||5000
+const PORT=process.env.PORT||4010
 
 // cloudinary.v2.config({
 //     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
