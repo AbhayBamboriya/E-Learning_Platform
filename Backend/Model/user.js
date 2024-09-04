@@ -1,6 +1,8 @@
 // // models/User.js
 import mysql from 'mysql';
+import bcrypt from 'bcryptjs'
 import {config} from 'dotenv'
+import jwt from 'jsonwebtoken'
 config()
 
 // Database connection configuration
@@ -30,6 +32,7 @@ connection.connect((err) => {
     console.log('Connected to the database.');
   }
 });
+<<<<<<< HEAD
 connection.query('SELECT * FROM users', (err, results) => {
   if (err) {
     reject(err);
@@ -40,8 +43,22 @@ connection.query('SELECT * FROM users', (err, results) => {
   }
 });
 // User Model with CRUD functions
+=======
+
+
+connection.query('SELECT * FROM users', (err, results) => {
+  if (err) {
+    console.log(err);
+    (err);
+  } else {
+    // resolve(results);
+    console.log(results);
+    
+  }
+});
+
+>>>>>>> 253ff9f48c24e77c132e1eabf648d868f21477fa
 const User = {
-  // Function to get all users
   getAllUsers: async () => {
     return new Promise((resolve, reject) => {
       connection.query('SELECT * FROM users', (err, results) => {
@@ -67,6 +84,27 @@ const User = {
     });
   },
 
+  // comparePassword: async (userId) => {
+  //   return await bcrypt.compare(plaintextPassword,encryptPassword)
+  // },
+
+
+  comparePassword: async(plaintextPassword,encryptPassword)=>{
+    console.log('[asswaod',plaintextPassword);
+    // return console.log(encryptPassword);
+    return await bcrypt.compare(plaintextPassword,encryptPassword)
+  },
+
+
+  generateJWTToken: async (userName,email)=>{
+    return await jwt.sign(
+        // {console.log(this.userName)},
+        {userName:userName,email:email},
+        process.env.JWT_SECRET,
+        {
+            expiresIn:process.env.JWT_EXPIRY,
+        }
+    )},
   // Function to find a user by email
   findByEmail: async (email) => {
     return new Promise((resolve, reject) => {

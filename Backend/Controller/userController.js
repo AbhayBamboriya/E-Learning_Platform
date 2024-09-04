@@ -41,37 +41,44 @@ const register  = async(req,res,next)=>{
     }
 }
 
-// const login=async(req,res,next)=>{
-//     try{
-//         // console.log('req',body);
-//         // console.log(req.cookies);
-//         const {email,password}=req.body;
-//         console.log('email',email,' ',password);
-//         if(!email || !password){
-//             return next (new AppError('All fields are required',400))
-//         }
-//         const user=await User.findOne({email}).select('+password')
-//         // !user || !user.comparePassword(password)
-//         if(!(user && (await user.comparePassword(password)))){
-//             return next(new AppError('Email and Password doesnot match',400))
-//         }
-//         console.log('user from login ',user);
-//         const token=await user.generateJWTToken()
-//         console.log('token from login',token);
-//         user.password=undefined
-//         res.cookie('token',token,cookieOptions)
-//         console.log('after change ',res.cookie._id);
-//         res.status(200).json({
-//             success:true,
-//             message:"User loged in successfully",
-//             user
-//         })
-//     }
-//     catch(e){
-//         return next(new AppError(e.message,500))
-//     }
+const login=async(req,res,next)=>{
+    try{
+        // console.log('req',body);
+        // console.log(req.cookies);
+        const {email,password}=req.body;
+        console.log('email',email,' ',password);
+        if(!email || !password){
+            return next (new AppError('All fields are required',400))
+        }
+
+
+        
+        const existingUser = await User.findByEmail(email);
+            console.log('exist ',existingUser);
+
+        const c=await User.comparePassword(password,existingUser.password);
+        if(!c)  return next (new AppError('Incorrect Password',400))
+        console.log('rr');
+        
+            const token=await User.generateJWTToken(existingUser.username,existingUser.password)
+            console.log('token is',token);
+            // console.log('user',User);
+            
+            User.password=undefined
+            res.cookie('token',token,cookieOptions)
+        console.log('rre');
+        
+        res.status(200).json({
+            success:true,
+            message:"User loged in successfully",
+            User
+        })
+    }
+    catch(e){
+        return next(new AppError(e.message,500))
+    }
     
-// }
+}
 // const logout=(req,res)=>{
 //     res.cookie('token',null,{
 //         secure:true,
@@ -282,7 +289,15 @@ const register  = async(req,res,next)=>{
 //     catch(e){
 //         console.log(e);
 //     }
-
+ // if(!(user && (await user.comparePassword(password)))){
+        //     return next(new AppError('Email and Password doesnot match',400))
+        // }
+        // console.log('user from login ',user);
+        // const token=await user.generateJWTToken()
+        // console.log('token from login',token);
+        // user.password=undefined
+        // res.cookie('token',token,cookieOptions)
+        // console.log('after change ',res.cookie._id);
 // }
 // const allUser=async(req,res,next)=>{
 //     try{
@@ -299,5 +314,6 @@ const register  = async(req,res,next)=>{
 //     }
 // }
 export{
-    register
+    register,
+    login
 }
