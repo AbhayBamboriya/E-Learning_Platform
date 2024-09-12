@@ -83,9 +83,9 @@ const User = {
   },
 
 
-  generateJWTToken: async (role,id)=>{
+  generateJWTToken: async (role,id,name)=>{
     return await jwt.sign(
-        { id: id, role: role },
+        { id: id, role: role ,name:name},
         process.env.JWT_SECRET,{
             expiresIn:'1h',
         }
@@ -107,11 +107,11 @@ const User = {
   createUser: async (userData) => {
     console.log('is user',userData);
     
-    const { name,role, email, password } = userData;
+    const { Name,role, email, password } = userData;
     return new Promise((resolve, reject) => {
       connection.query(
         'INSERT INTO users (name, role , email, password) VALUES (?,?, ?, ?)',
-        [name, role,email, password],
+        [Name, role,email, password],
         (err, results) => {
           if (err) {
             reject(err);
@@ -169,6 +169,28 @@ export const Doubt={
       });
     });
   },
+
+
+  GetResources: async () => {
+    // console.log('test',title,description,userId);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT teacherName, url, subject FROM upload',  (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the number of affected rows
+        }
+      });
+    });
+  },
+
+  
+  
+  
+  
+  
+  
   SolveDoubt:async(doubtId,answer,Id)=>{
     return new Promise((resolve, reject) => {
       connection.query('INSERT INTO answers (doubt_id, answer, teacher_id) VALUES (?, ?, ?)', [doubtId,answer,Id], (err, results) => {
@@ -179,6 +201,31 @@ export const Doubt={
         }
       });
     });
+  },
+  UploadResources:async(teacherName, secureUrl, subject)=>{
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO upload (teacherName, url, subject) VALUES (?, ?, ?)', [teacherName, secureUrl, subject], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+  GetAllDoubts:async()=>{
+    return new Promise((resolve, reject) => {
+      connection.query('select * from doubts', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the number of affected rows
+        }
+        console.log('res',results);
+        
+      });
+    });
   }
+
 }
 export default User;

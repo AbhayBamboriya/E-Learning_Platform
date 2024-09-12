@@ -3,6 +3,8 @@ import AppError from '../utils/error.js'
 const isLoggedIn = async (req,res,next)=>{
   
     const {token}=req.cookies
+    console.log('fjdjfdj',req.cookies);
+    
     if(!token){
         return next(new AppError('Unauthenticated , please login again',405))
     }
@@ -10,6 +12,8 @@ const isLoggedIn = async (req,res,next)=>{
     if (!userDetails) {
         return next(new AppError("Unauthorized, please login to continue", 401));
       }
+    console.log('detail',userDetails);
+    
     req.user=userDetails
     next()
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import img from '../assets/assets/ab1.avif'
@@ -8,10 +8,11 @@ import img3 from '../assets/assets/con2.jpg'
 import img4 from '../assets/assets/dev.avif'
 import img5 from '../assets/assets/img2.avif'
 import img6 from '../assets/assets/img6.avif'
-import { createAccount, login } from '../Redux/Slices/AuthSlice.js';
+import { createAccount, login, signout } from '../Redux/Slices/AuthSlice.js';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -75,8 +76,7 @@ async function signin(e){
   console.log('from sign up',response);
   if(response?.payload?.success)    {
     console.log('inside');
-    toast("User Logged Successfully")
-    
+    toast.success("User Logged Successfully")
   }
   
 }
@@ -127,10 +127,24 @@ async function signin(e){
   )
  
 }
+
 const Navbar = () => {
+  const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
+  const role=useSelector((state)=>state?.auth?.role)
+
+  const dispatch=useDispatch();
+  const navigate=useNavigate()
+  async function  logout(){
+    console.log('inlogout');
+    const res=await dispatch(signout())
+    console.log('res of logout',res);
+  }
+  
   return (
+
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div style={{ color: 'red' }} className="container-fluid">
+        {isLoggedIn}
         <a className="navbar-brand" id="bad" href="#">Icoder Website</a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ backgroundColor: 'green' }}>
@@ -164,10 +178,26 @@ const Navbar = () => {
             <button className="btn btn-outline-secondary" type="submit">Search</button>
           </form>
           <div className="mx-2">
-            <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#example1Modal" >Login</button>
-            <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#example2Modal">SignUp</button>
+            {
+              isLoggedIn ? <button className="btn btn-danger" onClick={logout} >Logout</button> :
+              <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#example1Modal" >Login</button>
+            }
+            {
+              !isLoggedIn && <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#example2Modal">SignUp</button>
+            }
           </div>
-          <button id="d" type="submit" className="btn btn-primary">Submit</button>
+          {/* <button id="d" type="submit" className="btn btn-primary">Submit</button> */}
+          {
+            isLoggedIn && (<>
+              <button className="btn btn-success" onClick={()=>navigate('/askDoubt')}>Ask Doubt</button> 
+              <button className="btn btn-success" onClick={()=>navigate('/allDoubts')}>All Doubts</button>
+              <button className="btn btn-success" onClick={()=>navigate('/resource')}> Resources</button>
+
+            </>)
+          }
+          {
+            role=="teacher" &&  <button className="btn btn-success" onClick={()=>navigate('/upload')}>Upload Resources</button> 
+          }
         </div>
       </div>
     </nav>
