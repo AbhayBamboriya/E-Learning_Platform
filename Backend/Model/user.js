@@ -48,7 +48,7 @@ connection.query('SELECT * FROM users', (err, results) => {
 const User = {
   getAllUsers: async () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users', (err, results) => {
+      connection.query('SELECT * FROM users2', (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -61,7 +61,7 @@ const User = {
   // Function to get a user by ID
   getUserById: async (userId) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
+      connection.query('SELECT * FROM users2 WHERE user_id = ?', [userId], (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -83,13 +83,11 @@ const User = {
   },
 
 
-  generateJWTToken: async (userName,email)=>{
+  generateJWTToken: async (role,id)=>{
     return await jwt.sign(
-        // {console.log(this.userName)},
-        {userName:userName,email:email},
-        process.env.JWT_SECRET,
-        {
-            expiresIn:process.env.JWT_EXPIRY,
+        { id: id, role: role },
+        process.env.JWT_SECRET,{
+            expiresIn:'1h',
         }
     )},
   // Function to find a user by email
@@ -107,11 +105,13 @@ const User = {
 
   // Function to create a new user
   createUser: async (userData) => {
-    const { username, email, password } = userData;
+    console.log('is user',userData);
+    
+    const { name,role, email, password } = userData;
     return new Promise((resolve, reject) => {
       connection.query(
-        'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-        [username, email, password],
+        'INSERT INTO users (name, role , email, password) VALUES (?,?, ?, ?)',
+        [name, role,email, password],
         (err, results) => {
           if (err) {
             reject(err);
@@ -155,4 +155,30 @@ const User = {
   },
 };
 
+export const Doubt={
+  PostDoubt: async (title,description,userId) => {
+    console.log('test',title,description,userId);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO doubts (title, description, user_id) VALUES (?, ?, ?)', [title,description,userId], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+  SolveDoubt:async(doubtId,answer,Id)=>{
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO answers (doubt_id, answer, teacher_id) VALUES (?, ?, ?)', [doubtId,answer,Id], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  }
+}
 export default User;

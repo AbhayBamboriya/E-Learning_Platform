@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import userRoutes from './Routes/userRoutes.js'
 import errorMiddleware from './middleware/error.middleware.js';
 const app=express()
+import doubtRoutes  from './Controller/Doubtcontroller.js';
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
@@ -33,6 +34,7 @@ app.use('/ping',function(req,res){
 })
 
 app.use('/api',userRoutes)
+app.use('/doubts',doubtRoutes)
 app.all('*',(req,res)=>{
     res.status(404).send('OOPS!!! 404 page not found')
 })

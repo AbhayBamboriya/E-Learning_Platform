@@ -9,15 +9,13 @@ const cookieOptions={
 }
 const register  = async(req,res,next)=>{
     try{
-        const {Name,email,password}=req.body;
-        console.log('data',Name,email,password);
-        if(!email || !password || !Name){
+        const { Name, email, password, role } = req.body;
+        console.log(req.body);
+        if(!email || !password || !role || !Name){
             return next(new AppError('All fields are Required',400))
         }
-        try {
-            console.log('st');
-            
-            const existingUser = await User.findByEmail(email);
+        
+        const existingUser = await User.findByEmail(email);
             console.log('exist ',existingUser);
             
             if (existingUser) {
@@ -25,16 +23,9 @@ const register  = async(req,res,next)=>{
             }
         
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = { email, password: hashedPassword,username:Name };
+            const user = { email, password: hashedPassword,role,Name };
             
             await User.createUser(user);
-            // sendVerificationEmail(email);  // Send email verification (assuming emailService is properly set up)
-        
-            res.status(201).json({ message: 'User registered successfully. Please verify your email.' });
-          } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Internal server error' });
-          }
     }
     catch(e){
         return next(new AppError(e.message,500))
@@ -43,42 +34,46 @@ const register  = async(req,res,next)=>{
 
 const login=async(req,res,next)=>{
     try{
-        // console.log('req',body);
-        // console.log(req.cookies);
-        const {email,password}=req.body;
-        console.log('email',email,' ',password);
-        if(!email || !password){
-            return next (new AppError('All fields are required',400))
-        }
-
-
-        
-        const existingUser = await User.findByEmail(email);
-            console.log('exist ',existingUser);
-
-        const c=await User.comparePassword(password,existingUser.password);
-        if(!c)  return next (new AppError('Incorrect Password',400))
-        console.log('rr');
-        
-            const token=await User.generateJWTToken(existingUser.username,existingUser.password)
-            console.log('token is',token);
-            // console.log('user',User);
+            const {email,password}=req.body;
+            console.log('email',email,' ',password);
+            if(!email || !password){
+                return next (new AppError('All fields are required',400))
+            }
+    
+    
             
-            User.password=undefined
-            res.cookie('token',token,cookieOptions)
-        console.log('rre');
-        
-        res.status(200).json({
-            success:true,
-            message:"User loged in successfully",
-            User
-        })
+            const existingUser = await User.findByEmail(email);
+                console.log('exist ',existingUser);
+            if(!existingUser)   return next(new AppError('User is not registered',400))
+            const c=await User.comparePassword(password,existingUser.password);
+            if(!c)  return next (new AppError('Incorrect Password',400))
+            console.log('rr');
+            
+                const token=await User.generateJWTToken(existingUser.role,existingUser.id)
+                console.log('token is',token);
+                // console.log('user',User);
+                
+                existingUser.password=undefined
+                res.user=existingUser
+                res.cookie('token',token,cookieOptions)
+                res.status(200).json({
+                    success:true,
+                    message:"User loged in successfully",
+                    existingUser
+                })
+
+
+
+           // res.json({ token, role: user.role });
+        ;
     }
     catch(e){
         return next(new AppError(e.message,500))
     }
     
 }
+
+// const 
 // const logout=(req,res)=>{
 //     res.cookie('token',null,{
 //         secure:true,
