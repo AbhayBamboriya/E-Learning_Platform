@@ -1,6 +1,21 @@
-#web{
+#b1 a{
+    color: white;
 }
-
-#id {
-    background-color: red;
+body{
+    background-image: url("assets/back.avif");
+    background-size: cover;
+}
+#new{
+    
+    translate: 220px 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 40px; 
+    font-weight: bolder;
+    background: linear-gradient(90deg,  #00ffff,#0617ff); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
