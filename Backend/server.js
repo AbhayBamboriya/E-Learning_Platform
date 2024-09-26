@@ -13,5 +13,5 @@ cloudinary.v2.config({
 })
 
 app.listen(PORT,async()=>{
-    console.log(`App is runnig at http:localhost:${PORT}`);
+    console.log(`App is running at http:localhost:${PORT}`);
 })

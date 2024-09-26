@@ -5,6 +5,7 @@ import { isLoggedIn } from '../middleware/authMiddleware.js';
 import upload from '../middleware/multeer.middleware.js';
 import cloudinary from 'cloudinary'
 import User from '../Model/user.js';
+import AppError from '../utils/error.js';
 // Get All Doubts (Students can post, Teachers can answer)
 router.get('/', async(req, res) => {
     const doubts=await Doubt.GetAllDoubts()
@@ -102,15 +103,31 @@ router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
   });
 
 // Answer a Doubt (Only teachers)
-router.post('/:id/answer', async(req, res) => {
-    const doubtId = req.params.id;
+router.post('/:id/answer',isLoggedIn,async(req, res,next) => {
+    try{
+        const doubtId = req.params.id;
     const { answer } = req.body;
     const Id = req.user;
 
     console.log('user',req.user);
     
-    await Doubt.SolveDoubt(doubtId,answer,Id)
-    res.status(200).json({success:true,message:"Answer posted Successfully"});
+    const result=await Doubt.SolveDoubt(doubtId,answer,Id)
+    res.status(200).json({success:true,message:"Answer posted Successfully",result});
+    }
+    catch(e){
+        return next(new AppError(e.message,500)) 
+    }
 });
+
+router.get('/answer/:id',async(req,res)=>{
+    // to get all the answers of particular doubt
+    const doubtId=req.params.id
+    const result=await Doubt.GetAnswers(doubtId)
+    res.status(200).json({
+        success:true,
+        message:'All Answers',
+        result
+    })
+})
 
  export default router;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AllDoubtes = () => {
     const [doubts, setDoubts] = useState([]);
@@ -28,6 +29,7 @@ const AllDoubtes = () => {
             <tr>
               <th>Title</th>
               <th>Description</th>
+              <th>View Answers</th>
             </tr>
           </thead>
           <tbody>
@@ -35,10 +37,13 @@ const AllDoubtes = () => {
             }
             {doubts?.Doubts?.length > 0 ? (
               doubts?.Doubts?.map((doubt, index) => (
-                
+              
                 <tr key={index}>
+                  {console.log('ssd',doubt)}
+                  
                   <td>{doubt.title}</td>
                   <td>{doubt.description}</td>
+                  <td><Link to={`/answer/${doubt.id}`}><u><i>Answer</i></u></Link></td>
                 </tr>
               ))
             ) : (

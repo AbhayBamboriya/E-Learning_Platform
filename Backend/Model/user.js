@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken'
 config()
 
 // Database connection configuration
+console.log('cjsdjs');
+
 console.log(process.env.DB_HOST)
 console.log(process.env.DB_PASSWORD);
 console.log(process.env.DB_USER);
@@ -40,7 +42,7 @@ connection.query('SELECT * FROM users', (err, results) => {
     (err);
   } else {
     // resolve(results);
-    console.log(results);
+    // console.log(results);
     
   }
 });
@@ -171,6 +173,28 @@ export const Doubt={
   },
 
 
+  GetAnswers: async (id) => {
+    return new Promise((resolve, reject) => {
+      // Query to get the answer and the teacher's name using a JOIN
+      connection.query(
+        `SELECT a.answer, a.teacher_id, t.name AS teacherName 
+         FROM answers a
+         JOIN users t ON a.teacher_id = t.id
+         WHERE a.doubt_id = ?`, 
+        [id], 
+        (err, result) => {
+          if (err) {
+            return reject(err);
+          } else {
+            console.log('checking result', result);
+            resolve(result); // Return both answer and teacher's name
+          }
+        }
+      );
+    });
+  },
+  
+
   GetResources: async () => {
     // console.log('test',title,description,userId);
     
@@ -192,8 +216,10 @@ export const Doubt={
   
   
   SolveDoubt:async(doubtId,answer,Id)=>{
+    console.log('checking detailsffdjfd',doubtId,answer,Id.id);
+    
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO answers (doubt_id, answer, teacher_id) VALUES (?, ?, ?)', [doubtId,answer,Id], (err, results) => {
+      connection.query('INSERT INTO answers (doubt_id, answer, teacher_id) VALUES (?, ?, ?)', [doubtId,answer,Id.id], (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -202,6 +228,8 @@ export const Doubt={
       });
     });
   },
+  
+  
   UploadResources:async(teacherName, secureUrl, subject)=>{
     return new Promise((resolve, reject) => {
       connection.query('INSERT INTO upload (teacherName, url, subject) VALUES (?, ?, ?)', [teacherName, secureUrl, subject], (err, results) => {
