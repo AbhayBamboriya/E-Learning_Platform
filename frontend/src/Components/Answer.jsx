@@ -161,10 +161,10 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-    padding: 12px 20px;
+    padding: 1px 25px;
     background-color: #007bff;
     border: none;
-    border-radius: 25px;
+    border-radius: 224px;
     color: white;
     cursor: pointer;
     font-size: 16px;

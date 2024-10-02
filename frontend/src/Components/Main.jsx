@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Homelayout from './Homelayout.jsx';
 import LoggingIn from './LoggingIn.jsx';
+import Slidebar from './Slidebar.jsx';
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -78,7 +79,7 @@ async function signin(e){
   console.log('from sign up',response);
   if(response?.payload?.success)    {
     console.log('inside');
-    toast.success("User Logged Successfully")
+    toast.success("User Logged In Successfully")
   }
   
 }
@@ -136,22 +137,15 @@ const Navbar = () => {
 
   const dispatch=useDispatch();
   const navigate=useNavigate()
-  async function  logout(){
-    console.log('inlogout');
-    const res=await dispatch(signout())
-    console.log('res of logout',res);
-    if(res?.payload?.success) {
-      console.log('logout successfully');
-      toast.success('User Logout SuccessFully') 
-      
-    }
-  }
+  
   
   return (
 
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div style={{ color: 'red' }} className="container-fluid">
+      <div style={{ color: 'dar',gap:'20px',marginLeft:'120px',marginBttom:'20px',display:'flex',justifySelf:'center',alignItems:'center' }} className="container-fluid">
+        {isLoggedIn && <Slidebar/>}
         <a className="navbar-brand" id="bad" href="#">EduVerse </a>
+       
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ backgroundColor: 'green' }}>
           <span className="navbar-toggler-icon"></span>
@@ -185,7 +179,7 @@ const Navbar = () => {
           </form>
           <div className="mx-2">
             {
-              isLoggedIn ? <button className="btn btn-danger" onClick={logout} >Logout</button> :
+              !isLoggedIn &&
               <button className="btn btn-danger" onClick={()=>navigate('/login')} >Login</button>
             }
             {
@@ -193,17 +187,7 @@ const Navbar = () => {
             }
           </div>
           {/* <button id="d" type="submit" className="btn btn-primary">Submit</button> */}
-          {
-            isLoggedIn && (<>
-              <button className="btn btn-success" onClick={()=>navigate('/askDoubt')}>Ask Doubt</button> 
-              <button className="btn btn-success" onClick={()=>navigate('/allDoubts')}>All Doubts</button>
-              <button className="btn btn-success" onClick={()=>navigate('/resource')}> Resources</button>
-
-            </>)
-          }
-          {
-            role=="teacher" &&  <button className="btn btn-success" onClick={()=>navigate('/upload')}>Upload Resources</button> 
-          }
+          
         </div>
       </div>
     </nav>
@@ -400,7 +384,7 @@ const Carousel = () => {
           </div>
         </div>
         <div className="carousel-item">
-          <img src="assets/4.avif" className="d-block w-100" style={{ height: '400px' }} alt="..." />
+          <img src="assets/img4.avif" className="d-block w-100" style={{ height: '400px' }} alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>The best coding blog</h5>
             <p>Technology, development, and Trends.</p>
@@ -422,7 +406,7 @@ const Carousel = () => {
       </div>
       <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Previous</span>
+        <span className="visually-hidden" style={{zIndex:'-1'}}>Previous</span>
       </button>
       <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
@@ -483,8 +467,9 @@ const Main = () => {
     // <Homelayout>
         <div>
 
-        <Login/>
+        {/* <Login/> */}
         <Navbar />
+        {/* <Slidebar/> */}
         <Carousel />
         <Courses />
         <Signup/>
