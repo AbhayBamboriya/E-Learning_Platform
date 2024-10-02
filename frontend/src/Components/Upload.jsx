@@ -7,7 +7,7 @@ const Upload = () => {
     const [subject, setSubject] = useState('');
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
-
+    let loading=false;
     const handleSubjectChange = (event) => {
       setSubject(event.target.value);
     };
@@ -17,8 +17,9 @@ const Upload = () => {
     };
 
     const handleSubmit = async (event) => {
+        loading=true;
         event.preventDefault();
-      
+        const toastId=toast.loading('Wait, File is Uploading') 
         if (!subject || !file) {
           setMessage('Please provide both subject and file.');
           return;
@@ -37,7 +38,8 @@ const Upload = () => {
 
           });
           console.log('req of upload',response);
-          if(response?.data?.success) toast.success('Resource Uploaded SuccessFully')
+          // if(response)  loading=false;
+          if(response?.data?.success) toast.update(toastId, { render: 'Resource Upload successful!', type: 'success', isLoading: false });
           {
             
           }
@@ -51,7 +53,18 @@ const Upload = () => {
 
     return (
       <div className="upload-container"> {/* Apply the CSS class here */}
-      <ToastContainer/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
         <h1>Upload Resources</h1>
         <form onSubmit={handleSubmit}>
           <div>

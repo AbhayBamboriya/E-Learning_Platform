@@ -21,7 +21,7 @@ function App() {
           <Route path='/askDoubt' element={<AskDoubt/>}/>
           <Route path='/allDoubts' element={<AllDoubtes/>}/>
           <Route path='/upload' element={<Upload/>}/>
-          <Route path='resource' element={<GetResources/>}/>
+          <Route path='/resource' element={<GetResources/>}/>
           <Route path='/answer/:doubtId' element={<Answer/>}/>
         </Routes>
       </>
