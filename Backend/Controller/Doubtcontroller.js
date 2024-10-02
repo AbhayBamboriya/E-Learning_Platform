@@ -21,12 +21,14 @@ router.get('/', async(req, res) => {
 
 
 // Post a Doubt (Only students)
-router.post('/',isLoggedIn,async(req, res) => {
+router.post('/',isLoggedIn,async(req, res,next) => {
     try{
         const { title, description } = req.body;
     const userId = req.user.id;
-    console.log(title,description,req.user);
-    
+    console.log('let',title,description,req.user);
+    if(!title || !description){
+        return next(new AppError('Title,Description are Required',400))
+    }
     // if (req.user.role !== 'student') {
     //     return res.status(403).send('Only students can post doubts.');
     // }

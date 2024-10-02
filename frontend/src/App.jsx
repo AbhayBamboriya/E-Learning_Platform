@@ -7,6 +7,7 @@ import AllDoubtes from './Components/AllDoubtes'
 import Upload from './Components/Upload'
 import GetResources from './Components/GetResouces'
 import Answer from './Components/Answer'
+import Login from './Components/LoggingIn'
 
 function App() {
 
@@ -15,6 +16,8 @@ function App() {
         
         <Routes>
           <Route path='/' element={<Main/>}/>
+          <Route path={`/:loginn`}  element={<Login/>}/>
+          <Route path={`/:register`} element={<Login/>}/>
           <Route path='/askDoubt' element={<AskDoubt/>}/>
           <Route path='/allDoubts' element={<AllDoubtes/>}/>
           <Route path='/upload' element={<Upload/>}/>

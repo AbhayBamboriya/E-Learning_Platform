@@ -13,6 +13,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Homelayout from './Homelayout.jsx';
+import LoggingIn from './LoggingIn.jsx';
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -138,13 +140,17 @@ const Navbar = () => {
     console.log('inlogout');
     const res=await dispatch(signout())
     console.log('res of logout',res);
+    if(res?.payload?.success) {
+      console.log('logout successfully');
+      toast.success('User Logout SuccessFully') 
+      
+    }
   }
   
   return (
 
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div style={{ color: 'red' }} className="container-fluid">
-        {/* {isLoggedIn} */}
         <a className="navbar-brand" id="bad" href="#">EduVerse </a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ backgroundColor: 'green' }}>
@@ -180,10 +186,10 @@ const Navbar = () => {
           <div className="mx-2">
             {
               isLoggedIn ? <button className="btn btn-danger" onClick={logout} >Logout</button> :
-              <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#example1Modal" >Login</button>
+              <button className="btn btn-danger" onClick={()=>navigate('/login')} >Login</button>
             }
             {
-              !isLoggedIn && <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#example2Modal">SignUp</button>
+              !isLoggedIn && <button className="btn btn-success" onClick={()=>navigate('/register')}>SignUp</button>
             }
           </div>
           {/* <button id="d" type="submit" className="btn btn-primary">Submit</button> */}
@@ -474,21 +480,22 @@ const Footer = () => {
 
 const Main = () => {
   return (
-    <div>
-      <Login/>
-      <Navbar />
-      <Carousel />
-      <Courses />
-      <Signup/>
-      {/* <CourseCard title="Databases" description="" /> */}
-      {/* <Footer /> */}
-      <Modal id="example1Modal" title="Login">
-        This is the login modal.
-      </Modal>
-      <Modal id="example2Modal" title="SignUp">
-        This is the signup modal.
-      </Modal>
-    </div>
+    // <Homelayout>
+        <div>
+
+        <Login/>
+        <Navbar />
+        <Carousel />
+        <Courses />
+        <Signup/>
+        <Modal id="example1Modal" title="Login">
+          This is the login modal.
+        </Modal>
+        <Modal id="example2Modal" title="SignUp">
+          This is the signup modal.
+        </Modal>
+        </div>
+    // </Homelayout>
   );
 };
 
