@@ -464,7 +464,7 @@
 //         <Navbar />
 //         {/* <Slidebar/> */}
 //         <Carousel />
-//         {/* <Courses /> */}
+//         <Courses />
 //         <Signup/>
 //         <Modal id="example1Modal" title="Login">
 //           This is the login modal.
