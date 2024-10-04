@@ -159,7 +159,7 @@ const Navbar = () => {
               <a className="nav-link" href="about.html">About</a>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Topics
               </a>
               <ul className="dropdown-menu">
@@ -285,7 +285,6 @@ async function createNewAccount(e){
             draggable
             pauseOnHover
             theme="light"
-            // transition: Bounce
         />
     <div class="modal-dialog">
         <div class="modal-content">
@@ -300,13 +299,7 @@ async function createNewAccount(e){
                           <input type="email" class="form-control" name="Name" value={signupData.Name} onChange={handleUserInput} id="exampleInputEmail1"
                               aria-describedby="emailHelp"/>
                       </div>
-                      {/* <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Role</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1"
-                            aria-describedby="emailHelp"/>
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div> */}
-
+                    
                       <div class="w-full">
                     
                       </div>
@@ -471,7 +464,7 @@ const Main = () => {
         <Navbar />
         {/* <Slidebar/> */}
         <Carousel />
-        <Courses />
+        {/* <Courses /> */}
         <Signup/>
         <Modal id="example1Modal" title="Login">
           This is the login modal.
