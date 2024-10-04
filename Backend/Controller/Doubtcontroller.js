@@ -94,6 +94,38 @@ router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
 
 
 
+  router.post('/uploadBook',isLoggedIn, upload.single('bookFile'), async (req, res,next) => {
+    try {
+      const { subjectName, bookName,year } = req.body;
+        console.log('user is',req.user);
+        
+      // Check if all fields are provided
+      if (!subjectName  || !bookName || !year || !req.file) {
+        return res.status(400).json({ message: 'All fields are required.' });
+      }
+      if(req.user.role!="teacher")  return next(new AppError ("Not Allowed To Upload The Books."))
+      // Upload the file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'books'
+      });
+  
+      // Prepare response data
+      const uploadData = {
+        subjectName,
+        year,
+        uploaderName:req.user.name,
+        bookName,
+        secureUrl: result.secure_url,
+        cloudinaryId: result.public_id
+      };
+      await Doubt.UploadBook(uploadData)
+      res.status(200).json({ message: 'File uploaded successfully!', data: uploadData });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      res.status(500).json({ message: 'File upload failed.', error: error.message });
+    }
+  });
+
   router.get('/Getpdf', isLoggedIn,async (req, res) => {
     
     console.log('insode');
@@ -131,5 +163,42 @@ router.get('/answer/:id',async(req,res)=>{
         result
     })
 })
+
+
+
+router.post('/uploadPaper',isLoggedIn, upload.single('questionPaper'), async (req, res) => {
+    try {
+      const { subjectName, year,branch,paperYear } = req.body;
+  
+      // Check if all fields are provided
+      if (!subjectName || !year || !paperYear || !branch || !req.file) {
+        return res.status(400).json({ message: 'All fields are required.' });
+      }
+      if(req.user.role!="teacher")  return next(new AppError ("Not Allowed To Upload The Books."))
+      // Upload the file to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'question-papers'
+      });
+  
+      // Prepare response data
+      const uploadData = {
+        subjectName,
+        year,
+        paperYear,
+        branch,
+        cloudinaryUrl: result.secure_url,
+        cloudinaryId: result.public_id
+      };
+  
+      // TODO: Save uploadData to the database here (MySQL)
+      await Doubt.UploadPaper(uploadData)
+      // Save to the database function goes here
+  
+      res.status(200).json({ message: 'Question paper uploaded successfully!', data: uploadData });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      res.status(500).json({ message: 'File upload failed.', error: error.message });
+    }
+  });
 
  export default router;

@@ -1,5 +1,6 @@
 import User from '../Model/user.js';
 import bcrypt from 'bcryptjs'
+import { connection } from '../Model/user.js';
 import AppError from '../utils/error.js';
 const cookieOptions={
     maxAge:60*60*1000,
@@ -103,9 +104,69 @@ const logout=(req,res)=>{
 }
 
 
+const feedback = async (req, res, next) => {
+    try {
+        const { teacherId, feedbackText } = req.body;
+        if (req.user.role == 'teacher') return next(new AppError('Not Allowed To give feedback', 500));
+
+        const studentId = req.user.id;
+
+        if (!teacherId || !feedbackText) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+
+        // Ensure the student and teacher exist and have the correct roles
+        const studentQuery = `SELECT id, role FROM users WHERE id = ? AND role = 'student'`;
+        const teacherQuery = `SELECT id, role FROM users WHERE id = ? AND role = 'teacher'`;
+
+        // Use dbConfig.execute to check student and teacher
+        const [studentRows] = await new Promise((resolve, reject) => {
+            connection.query(studentQuery, [studentId], (err, res) => {
+                if (err) {
+                    console.log(err);
+                    return reject(err);
+                }
+                resolve(res);
+            });
+        });
+        console.log('assk');
+        
+        const [teacherRows] = await new Promise((resolve, reject) => {
+            connection.query(teacherQuery, [teacherId], (err, res) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(res);
+            });
+        });
+        console.log('l ',studentRows.length," ",teacherRows.length);
+        
+        if (studentRows.length === 0 || teacherRows.length === 0) {
+            return res.status(400).json({ message: 'Invalid student or teacher ID.' });
+        }
+
+        // Insert feedback into the feedback table
+        const insertQuery = `INSERT INTO feedback (student_id, teacher_id, feedback_text) VALUES (?, ?, ?)`;
+        await new Promise((resolve, reject) => {
+            connection.query(insertQuery, [studentId, teacherId, feedbackText], (err, res) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(res);
+            });
+        });
+        res.status(200).json({ message: 'Feedback submitted successfully!' });
+    } catch (e) {
+        return next(new AppError(e.message, 500));
+    }
+};
+
+
+
 
 export{
     register,
     login,
-    logout
+    logout,
+    feedback
 }

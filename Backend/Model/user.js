@@ -16,7 +16,7 @@ console.log(process.env.DB_NAME);
 
 ;
 
-const dbConfig = {
+ const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -24,7 +24,7 @@ const dbConfig = {
 };
 
 // Function to create a new database connection
-const connection = mysql.createConnection(dbConfig);
+export const connection = mysql.createConnection(dbConfig);
 
 // Establishing the database connection
 connection.connect((err) => {
@@ -241,6 +241,42 @@ export const Doubt={
       });
     });
   },
+
+
+
+  UploadBook:async(data)=>{
+    // console.log();
+    console.log('data is ', data);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO books (year,subject_name, uploader_name,book_name, cloudinary_url) VALUES (?,?,?, ?, ?)', [data.year,data.subjectName, data.uploaderName, data.bookName,data.secureUrl], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+
+  UploadPaper:async(data)=>{
+    // console.log();
+    console.log('data is ', data);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO question_papers (subject_name,year,cloudinary_url,branch,PaperYear) VALUES (?,?,?,?,?)', [data.subjectName, data.year, data.cloudinaryUrl,data.branch,data.paperYear], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+
+
+
+
   GetAllDoubts:async()=>{
     return new Promise((resolve, reject) => {
       connection.query('select * from doubts', (err, results) => {
