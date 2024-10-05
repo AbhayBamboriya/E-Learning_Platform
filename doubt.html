@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Discussion Page</title>
+    <link rel="stylesheet" href="doubtstyle.css">
+</head>
+<body>
+    <header>
+        <h1>Discussion Forum</h1>
+    </header>
+
+    <main>
+        <section class="post-form">
+            <h2>Post Your Doubt</h2>
+            <textarea id="doubtInput" rows="3" placeholder="Enter your doubt..."></textarea>
+            <button onclick="addDoubt()">Post</button>
+        </section>
+
+        <section class="posts" id="posts">
+            <!-- Doubts will be dynamically added here -->
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
