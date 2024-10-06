@@ -289,6 +289,30 @@ export const Doubt={
         
       });
     });
+
+    
+  },
+  GetAllBooks: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT year, subject_name, uploader_name, book_name, cloudinary_url FROM books', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the array of books
+        }
+      });
+    });
+  },
+  GetAllPaper: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT year, subject_name, branch, book_name, cloudinary_url,PaperYear FROM question_papers', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the array of books
+        }
+      });
+    });
   }
 
 }

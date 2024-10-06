@@ -126,6 +126,45 @@ router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
     }
   });
 
+
+  router.get("/allBooks",isLoggedIn,async (req, res, next) => {
+    try {
+      const books = await Doubt.GetAllBooks(); // Fetch all books from the DB
+  
+      if (!books || books.length === 0) {
+        return next(new AppError('No books found', 404));
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: 'Books retrieved successfully',
+        data: books,
+      });
+    } catch (err) {
+      return next(new AppError(err.message, 500));
+    }
+  });
+
+
+
+
+router.get("/allPYQ",isLoggedIn,async (req, res, next) => {
+    try {
+      const PYQ = await Doubt.GetAllPaper(); // Fetch all books from the DB
+  
+      if (!PYQ || PYQ.length === 0) {
+        return next(new AppError('No books found', 404));
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: 'Paper retrieved successfully',
+        data: PYQ,
+      });
+    } catch (err) {
+      return next(new AppError(err.message, 500));
+    }
+  });
   router.get('/Getpdf', isLoggedIn,async (req, res) => {
     
     console.log('insode');
