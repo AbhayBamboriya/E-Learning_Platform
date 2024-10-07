@@ -305,7 +305,7 @@ export const Doubt={
   },
   GetAllPaper: async () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT year, subject_name, branch, book_name, cloudinary_url,PaperYear FROM question_papers', (err, results) => {
+      connection.query('SELECT year, subject_name, branch, cloudinary_url,PaperYear FROM question_papers', (err, results) => {
         if (err) {
           reject(err);
         } else {
