@@ -48,36 +48,6 @@ connection.query('SELECT * FROM users', (err, results) => {
 });
 
 const User = {
-  getAllUsers: async () => {
-    return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users2', (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-  },
-
-  // Function to get a user by ID
-  getUserById: async (userId) => {
-    return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users2 WHERE user_id = ?', [userId], (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results[0]); // Return the first result (or undefined if not found)
-        }
-      });
-    });
-  },
-
-  // comparePassword: async (userId) => {
-  //   return await bcrypt.compare(plaintextPassword,encryptPassword)
-  // },
-
-
   comparePassword: async(plaintextPassword,encryptPassword)=>{
     console.log('[asswaod',plaintextPassword);
     // return console.log(encryptPassword);
@@ -125,36 +95,9 @@ const User = {
     });
   },
 
-  // Function to update a user's data by ID
-  updateUser: async (userId, userData) => {
-    const { username, email, password } = userData;
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'UPDATE users SET username = ?, email = ?, password = ? WHERE user_id = ?',
-        [username, email, password, userId],
-        (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(results.affectedRows); // Return the number of affected rows
-          }
-        }
-      );
-    });
-  },
+  
 
-  // Function to delete a user by ID
-  deleteUser: async (userId) => {
-    return new Promise((resolve, reject) => {
-      connection.query('DELETE FROM users WHERE user_id = ?', [userId], (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results.affectedRows); // Return the number of affected rows
-        }
-      });
-    });
-  },
+ 
 };
 
 export const Doubt={
@@ -230,9 +173,9 @@ export const Doubt={
   },
   
   
-  UploadResources:async(teacherName, secureUrl, subject)=>{
+  UploadResources:async(id, secureUrl, subject,description,year,branch)=>{
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO upload (teacherName, url, subject) VALUES (?, ?, ?)', [teacherName, secureUrl, subject], (err, results) => {
+      connection.query('INSERT INTO upload ( id,url, subject,description,year,branch) VALUES ( ?,?, ?,?,?,?)', [ id,secureUrl, subject,description,year,branch], (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -310,6 +253,18 @@ export const Doubt={
           reject(err);
         } else {
           resolve(results); // Return the array of books
+        }
+      });
+    });
+  },
+
+  GetAllNotes: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT users.Name,upload.subject,upload.description,upload.year,upload.branch,upload.url FROM users JOIN upload ON users.id = upload.id;', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); 
         }
       });
     });

@@ -10,6 +10,7 @@ const Upload = () => {
     const [message, setMessage] = useState('');
     const [type,setType]=useState('')
     const [book,setBook]=useState('')
+    const [description,setDescription]=useState('')
     const [year,setYear]=useState('')
     const [YearOfPapar,SetYearOfPaper]=useState('')
 
@@ -25,6 +26,12 @@ const Upload = () => {
     const handleBranchChange = (event) => {
       setBranch(event.target.value);
     };
+
+    const handleDescriptionChange = (event) => {
+      setDescription(event.target.value);
+    };
+
+
     
     const handleYearChange = (event) => {
       setYear(event.target.value);
@@ -88,6 +95,47 @@ const Upload = () => {
               
 
             }
+
+        }
+
+        else if(type=="Notes"){
+          const toastId=toast.loading('Wait, File is Uploading') 
+          if(!file || !subject || !description || !year || !branch){
+            toast.error('All Fields are Mandatory')
+                return
+          }
+
+          const formData = new FormData();
+            formData.append('subject',subject)
+            formData.append('year',year)
+            formData.append('description',description)
+            formData.append('branch',branch)
+            formData.append('pdf',file)
+
+            try {
+              console.log('req of upload',formData);
+              const response = await axios.post('http://localhost:5000/doubts/upload', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+                withCredentials:true
+    
+              });
+              
+              // if(response)  loading=false;
+              if(response?.data?.success) toast.update(toastId, { render: 'Notes Upload successful!', type: 'success', isLoading: false });
+             
+              setMessage(response.data.message);
+            } catch (error) {
+              setMessage('Error uploading file. Please try again.',error);
+              // console.log('Error:', error.response ? error.response.data : error.message);
+              console.log(
+                error
+              );
+              
+
+            }
+
 
         }
 
@@ -170,15 +218,15 @@ const Upload = () => {
                 <option value="" disabled selected>Type</option>
                 <option value="Book">Book PDF</option>
                 <option value="PYQ">PYQ</option>
+                <option value="Notes">Notes</option>
               </select>
               {
-                (type=="Book" || type=="PYQ") && <>
+                (type=="Book" || type=="PYQ" || type=="Notes") && <>
                   <label>
               Subject:
               <input type="text" value={subject} onChange={handleSubjectChange} required />
             </label>
             <label>
-              {/* Year: */}
               <select id="options" className="mt-1 block w-full border text-3 p-3 rounded-xl shadow-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name='year' value={year} onChange={handleYearChange}>
                 <option value="" disabled selected>Year</option>
                 <option value="1st">1st</option>
@@ -187,14 +235,22 @@ const Upload = () => {
                 <option value="4th">4th</option>
               </select>
             </label>
+            {
+              type=="Notes" &&
+              <label>
+              Description:
+              <input type="text" value={description} onChange={handleDescriptionChange} required />
+            </label>
+            }
             <label>
               Branch:
               <input type="text" value={branch} onChange={handleBranchChange} required />
             </label>
-            <label>
-              Year of Paper:
-              <input type="text" value={YearOfPapar} onChange={handleyearOfPaper} required />
-            </label>
+           {type=="PYQ" &&<label>
+            Year of Paper:
+            <input type="text" value={YearOfPapar} onChange={handleyearOfPaper} required />
+          </label>}
+           
                 </>
               }
             {

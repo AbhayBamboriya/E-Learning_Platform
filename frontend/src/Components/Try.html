@@ -1,56 +1,102 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script>
-            let a=document.getElementById("develop");
-            a.addEventListener("click",function()
-        {
-            a.onclick = function () {
-            location.href = "m.html";
-        };
-        })
-        </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+ .status-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.status-table th, .status-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.status-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.status-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.status-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.status.progress {
+  background-color: #28a745; /* Green for Progress */
+}
+
+.status.open {
+  background-color: #ffc107; /* Yellow for Open */
+  color: black;
+}
+
+.status.on-hold {
+  background-color: #dc3545; /* Red for On Hold */
+}
+
+
+  </style>
 </head>
+<body>
 
-<body style="align-items: center; justify-content: center; display: flex;background-color: rgb(157, 168, 180);">
-    <div class="my-5"style="width: 30%; height: 50%; ">
-    <body class="text-center">
-        <main class="form-signin">
-          <form>
-            <img class="mb-4" src="assets/logo.jpeg" alt="" width="72" height="57">
-            <h1 id="new" class="h3 mb-3 fw-normal" style="color: white;">Login into Icoder Website</h1>
-            <div class="form-floating my-2">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" fdprocessedid="tbmel6">
-              <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" fdprocessedid="sz61aw">
-              <label for="floatingPassword">Password</label>
-            </div>
-        
-            <div class="checkbox mb-3">
-              <label style="color: white;">
-                <input type="checkbox" value="remember-me"> Remember me
-              </label>
-            </div>
-            <button onclick="location.href='m.html';" class="w-100 btn btn-lg btn-primary" type="submit" fdprocessedid="ouvu6p" >Sign in</button>
-            <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
-          </form>
-        </main>
-        <span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span></body>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+
+  <table class="status-table">
+    <thead>
+      <tr>
+        <th>INVOICE</th>
+        <th>CUSTOMER</th>
+        <th>SHIP</th>
+        <th>PRICE</th>
+        <th>PURCHASED PRICE</th>
+        <th>STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1001</td>
+        <td>Mark Otto</td>
+        <td>Japan</td>
+        <td>$3000</td>
+        <td>$1200</td>
+        <td><span class="status progress">Progress</span></td>
+      </tr>
+      <tr>
+        <td>1001</td>
+        <td>Mark Otto</td>
+        <td>Japan</td>
+        <td>$3000</td>
+        <td>$1200</td>
+        <td><span class="status open">Open</span></td>
+      </tr>
+      <tr>
+        <td>1001</td>
+        <td>Mark Otto</td>
+        <td>Japan</td>
+        <td>$3000</td>
+        <td>$1200</td>
+        <td><span class="status on-hold">On hold</span></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  
 </body>
-
 </html>

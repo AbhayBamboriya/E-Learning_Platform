@@ -42,7 +42,7 @@ router.post('/',isLoggedIn,async(req, res,next) => {
 });
 
 
-router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
+router.post('/upload', isLoggedIn,upload.single('pdf'),async (req, res,next) => {
     
     let publicURL='dk'
     let secureUrl='cloudinary://378171611453713:jar_yV68UrVNSKbFbxleqoBxKJQ@dix9kn7zm'
@@ -84,11 +84,12 @@ router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
     console.log('fkddkffdfdfdfdfdfdfd00',req.body);
     console.log('user',req.user);
     
-    const { teacherName, subject } = req.body;
+    const { subject,description,year,branch } = req.body;
+    if(!subject || !description || !year || !branch){
+      return next(new AppError("All the fields are mandatory.",500))   
+    }
 
-    // Insert into the MySQL database
-    const sql = 'INSERT INTO teachers (teacherName, url, subject) VALUES (?, ?, ?)';
-    await Doubt.UploadResources(req.user.name, secureUrl, subject);
+    await Doubt.UploadResources(req.user.id, secureUrl, subject,description,year,branch);
     res.status(200).json({success:true,message:"Resources uploaded Successfully",url:secureUrl});
   });
 
@@ -146,6 +147,53 @@ router.post('/upload-pdf', isLoggedIn,upload.single('pdf'),async (req, res) => {
   });
 
 
+
+  router.get("/allNotes",isLoggedIn,async (req, res, next) => {
+    try {
+      const Notes = await Doubt.GetAllNotes(); // Fetch all books from the DB
+  
+      if (!Notes || Notes.length === 0) {
+        return next(new AppError('No books found', 404));
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: 'Notes retrieved successfully',
+        data: Notes,
+      });
+    } catch (err) {
+      return next(new AppError(err.message, 500));
+    }
+  });
+
+
+
+  router.get("/allNotes",isLoggedIn,async (req, res, next) => {
+    try {
+      const Notes = await Doubt.GetAllNotes(); // Fetch all books from the DB
+  
+      if (!Notes || Notes.length === 0) {
+        return next(new AppError('No books found', 404));
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: 'Notes retrieved successfully',
+        data: Notes,
+      });
+    } catch (err) {
+      return next(new AppError(err.message, 500));
+    }
+  });
+  router.get('/Getpdf', isLoggedIn,async (req, res) => {
+    
+    console.log('insode');
+    
+    const result=await Doubt.GetResources();
+    console.log(result);
+    
+    res.status(200).json({success:true,data:result});
+  });  
 
 
 router.get("/allPYQ",isLoggedIn,async (req, res, next) => {
