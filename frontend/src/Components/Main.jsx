@@ -13,9 +13,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Homelayout from './Homelayout.jsx';
-import LoggingIn from './LoggingIn.jsx';
+
 import Slidebar from './Slidebar.jsx';
+// import myImage from '../assets/e1.jpg';
+import myImage from '../assets/assets/background.jpg'
+
+
+
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -62,7 +66,7 @@ async function signin(e){
 
 
 
-  //   if(!signupData.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
+  //   if(!signupData.password.match(/^(?=.\d)(?=.[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
   //     // setLoading(false)
   //     return toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase', {
   //       position: "top-right",
@@ -103,7 +107,7 @@ async function signin(e){
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Login to icoder</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Login to EduVerse</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -132,67 +136,105 @@ async function signin(e){
 }
 
 const Navbar = () => {
-  const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
-  const role=useSelector((state)=>state?.auth?.role)
+  const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+  const role = useSelector((state) => state?.auth?.role);
 
-  const dispatch=useDispatch();
-  const navigate=useNavigate()
-  
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
-
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div style={{ color: 'dar',gap:'20px',marginLeft:'120px',marginBttom:'20px',display:'flex',justifySelf:'center',alignItems:'center' }} className="container-fluid">
-        {isLoggedIn && <Slidebar/>}
-        <a className="navbar-brand" id="bad" href="#">EduVerse </a>
-       
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ backgroundColor: 'green' }}>
+      <div
+        style={{
+          gap: "20px",
+          marginLeft: "120px",
+          marginBottom: "20px", // Fixed marginBottom typo
+          display: "flex",
+          justifySelf: "center",
+          alignItems: "center",
+        }}
+        className="container-fluid"
+      >
+        {isLoggedIn && <Slidebar />}
+        <a className="navbar-brand" id="bad" href="#">
+          Σ ｄｕＶｅｒｓｅ{" "}
+        </a>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          style={{ backgroundColor: "green" }}
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="index1.html">Home</a>
+              <a className="nav-link active" aria-current="page" href="index1.html">
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="about.html">About</a>
+              <a className="nav-link" href="about.html">
+                About
+              </a>
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Topics
               </a>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Profile</a></li>
-                <li><a className="dropdown-item" href="#">Profile</a></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Profile</a></li>
+              <ul className="dropdown-menu" style={{ backgroundColor: "transparent" }}>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#" style={{ color: "white" }}>
+                    Profile {/* Fixed incorrect style */}
+                  </a>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Profile
+                  </a>
+                </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="contact.html" aria-disabled="true">Contact Us</a>
+              <a className="nav-link" href="contact.html" aria-disabled="true">
+                Contact Us
+              </a>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-secondary" type="submit">Search</button>
-          </form>
+         
           <div className="mx-2">
-            {
-              !isLoggedIn &&
-              <button className="btn btn-danger" onClick={()=>navigate('/login')} >Login</button>
-            }
-            {
-              !isLoggedIn && <button className="btn btn-success" onClick={()=>navigate('/register')}>SignUp</button>
-            }
+            {!isLoggedIn && (
+              <button className="btn btn-danger" onClick={() => navigate("/login")}>
+                Login
+              </button>
+            )}
+            {!isLoggedIn && (
+              <button className="btn btn-success" onClick={() => navigate("/register")}>
+                SignUp
+              </button>
+            )}
           </div>
           {/* <button id="d" type="submit" className="btn btn-primary">Submit</button> */}
-          
         </div>
       </div>
     </nav>
   );
 };
+
 
 
 const Signup=()=>{
@@ -242,7 +284,7 @@ async function createNewAccount(e){
 
 
 
-  //   if(!signupData.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
+  //   if(!signupData.password.match(/^(?=.\d)(?=.[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
   //     // setLoading(false)
   //     return toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase', {
   //       position: "top-right",
@@ -338,24 +380,25 @@ async function createNewAccount(e){
 }
 const Modal = ({ id, title, children }) => {
   return (
-    <div className="modal " id={id} tabIndex="-1" aria-labelledby={`${id}Label`} >
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h1 className="modal-title fs-5" id={`${id}Label`}>{title}</h1>
-          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div className="modal-body">
-          {children}
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <div className="modal" id={id} tabIndex="-1" aria-labelledby={`${id}Label`}>
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id={`${id}Label`}>{title}</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            {children}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
+
 
 const Carousel = () => {
   return (
@@ -369,7 +412,7 @@ const Carousel = () => {
         <div className="carousel-item active">
           <img src={img6} className="d-block w-100" style={{ height: '400px' }} alt="..." />
           <div className="carousel-caption d-none d-md-block">
-            <h5>Welcome to icoder</h5>
+            <h5>Welcome to Σ ｄｕＶｅｒｓｅ</h5>
             <p>Technology, development, and Trends.</p>
             <button className="btn btn-primary">DSA</button>
             <button onClick={() => window.location.href = 'webdev.html'} className="btn btn-danger">Web development</button>
@@ -408,24 +451,63 @@ const Carousel = () => {
     </div>
   );
 };
-
 const Courses = () => {
   return (
     <div className="container my-5">
-      <h1><div className="text-bg-primary p-3">Courses Available</div></h1>
+      <h1>
+        <div className="text-bg-primary p-3">Platforms Where you can Explore courses </div>
+      </h1>
       <div className="row mb-2">
-        <CourseCard title="Frontend" description="Learn Html, CSS, and Javascript" date="Nov 12" imgSrc={img1} />
-        <CourseCard title="Python" description="Learn Python programming" date="Nov 11" imgSrc={img} />
-        <CourseCard title="Frontend" description="Learn Html, CSS, and Javascript" date="Nov 12" imgSrc={img2} />
-        <CourseCard title="Python" description="Learn Python programming" date="Nov 11" imgSrc={img3} />
-        <CourseCard title="Frontend" description="Learn Html, CSS, and Javascript" date="Nov 12" imgSrc={img4} />
-        <CourseCard title="Python" description="Learn Python programming" date="Nov 11" imgSrc={img5} />
+        <CourseCard 
+          title="Coursera" 
+          description="Coursera is a global online learning platform offering courses, Specializations, Professional Certificates, and degrees from top universities and companies" 
+          date="2012" 
+          imgSrc={img1} 
+          link="https://www.coursera.org/" 
+        />
+        <CourseCard 
+          title="NPTEL" 
+          description="The National Programme on Technology Enhanced (NPTEL) is an Indian e-learning platform offering university-level courses in science, technology etc." 
+          date="2003" 
+          imgSrc={img} 
+          link="https://onlinecourses.nptel.ac.in/" 
+        />
+        <CourseCard 
+          title="InfosysSpringBoard" 
+          description="Infosys Springboard is a free online learning platform designed to provide digital and life skills to students." 
+          date="2015" 
+          imgSrc={img2} 
+          link="https://infyspringboard.onwingspan.com/web/en/login" 
+        />
+        <CourseCard 
+          title="Udemy" 
+          description="Udemy is a popular online learning and teaching marketplace with over 250,000 courses and 73 million students." 
+          date="2020" 
+          imgSrc={img3} 
+          link="https://www.udemy.com/" 
+        />
+        <CourseCard 
+          title="Google Career Certificates" 
+          description="Google Career Certificates are designed to provide job-ready skills in high-demand fields such as data analytics, project management and digital marketing." 
+          date="Nov 25" 
+          imgSrc={img4} 
+          link="https://grow.google/intl/en_in/certificates/" 
+        />
+        <CourseCard 
+          title="LinkedIn Learning" 
+          description="Offers courses and learning paths that can lead to certifications, especially in business, technology, and creative fields." 
+          date="Nov 30" 
+          imgSrc={img5} 
+          link="https://learning.linkedin.com" 
+        />
       </div>
     </div>
   );
 };
 
-const CourseCard = ({ title, description, date, imgSrc }) => {
+const CourseCard = ({ title, description, date, imgSrc, link }) => {
+  const isExternalLink = link.startsWith('http'); // Check if the link is an external URL
+
   return (
     <div className="col-md-6">
       <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -434,16 +516,32 @@ const CourseCard = ({ title, description, date, imgSrc }) => {
           <h3 className="mb-0">{title}</h3>
           <div className="mb-1 text-body-secondary">{date}</div>
           <p className="card-text mb-auto">{description}</p>
-          <a href="#" className="icon-link gap-1 icon-link-hover stretched-link">
-            Continue reading
-          </a>
+
+          {/* Check if the link is external or internal */}
+          {isExternalLink ? (
+            <a 
+              href={link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="icon-link gap-1 icon-link-hover stretched-link"
+            >
+              Link to Platform
+            </a>
+          ) : (
+            <Link 
+              to={link} 
+              className="icon-link gap-1 icon-link-hover stretched-link"
+            >
+              Link to Platform
+            </Link>
+          )}
         </div>
         <div className="col-auto d-none d-lg-block">
-          <img className="bd-placeholder-img" width="200" height="250" src={imgSrc} alt="" />
+          <img className="bd-placeholder-img" width="200" height="250" src={imgSrc} alt={title} />
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 };
 
 const Footer = () => {
@@ -455,25 +553,62 @@ const Footer = () => {
   );
 };
 
+
+
+
 const Main = () => {
   return (
-    // <Homelayout>
-        <div>
+    <div>
+      <Navbar />
+      
+      {/* Container for image and text */}
+      <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+       
+        
+        {/* Image with overlay text */}
+        <div style={{ position: 'relative',height:'50%',width:'100%', backgroundImage:`url(${myImage})`, backgroundSize: 'cover', // Ensure the image covers the entire div
+    backgroundPosition: 'center',}}>
+          <img 
+            src={myImage}
+            alt="Descriptive Alt Text"
+            className="img-fluid my-4"
 
-        {/* <Login/> */}
-        <Navbar />
-        {/* <Slidebar/> */}
-        <Carousel />
-        <Courses />
-        <Signup/>
-        <Modal id="example1Modal" title="Login">
-          This is the login modal.
-        </Modal>
-        <Modal id="example2Modal" title="SignUp">
-          This is the signup modal.
-        </Modal>
+            style={{ translate: '0px -30px',width:'100%' }} // Adjust the image position if needed
+          />
+          {/* Overlay text on the image */}
+          <div 
+            style={{
+              position: 'absolute',
+              
+              top: '20%', // Adjust top position
+              right: '50%', // Adjust left position
+              left: '10%',
+              color: 'white', // Change color for visibility
+              fontSize: '24px', // Adjust font size
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)', // Optional: add shadow for better visibility
+            }}
+          >
+            <h1 style={{
+            fontStyle:'oblique',
+            textDecorationColor: 'linear-gradient(45deg, #ffffff, #000000)' }}>Σ ｄｕＶｅｒｓｅ</h1>
+            <br />
+            <h3 style={{fontFamily:'cursive',textDecorationStyle:'initial'}}>EduVerse is an interactive platform where students can ask questions, access a wealth of resources, 
+              and attempt quizzes to enhance their learning experience.</h3>
+          </div>
         </div>
-    // </Homelayout>
+      </div>
+      
+      {/* Other components */}
+      <Carousel/>
+      <Courses />
+      <Signup />
+      <Modal id="example1Modal" title="Login">
+        This is the login modal.
+      </Modal>
+      <Modal id="example2Modal" title="SignUp">
+        This is the signup modal.
+      </Modal>
+    </div>
   );
 };
 

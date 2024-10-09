@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Slidebar.css'; // Ensure CSS is imported
+import './Slidebar.css'; 
 import { FiMenu } from 'react-icons/fi';
 import { signout } from '../Redux/Slices/AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
