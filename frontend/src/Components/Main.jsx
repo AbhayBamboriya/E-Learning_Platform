@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import img from '../assets/assets/ab1.avif'
 import img1 from '../assets/assets/about2.avif'
 import img2 from '../assets/assets/con1.jpg'
@@ -134,6 +135,11 @@ async function signin(e){
   )
  
 }
+
+
+
+
+
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
@@ -272,26 +278,27 @@ async function createNewAccount(e){
   }
 
 
-  // if(!isEmail(signupData.email)){
-  //     toast.error('Invalid Email Id')
-  //     return
-  // }
+  if(!isEmail(signupData.email)){
+      toast.error('Invalid Email Id')
+      return
+  }
 
-  // if(signupData.password != signupData.confirmPassword){
-  //     toast.error("Password and Confirm Password didn't match")
-  //     return
-  // }
-
-
-
-  //   if(!signupData.password.match(/^(?=.\d)(?=.[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
-  //     // setLoading(false)
-  //     return toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase', {
-  //       position: "top-right",
-  //   });
+  if(signupData.password != signupData.confirmPassword){
+      toast.error("Password and Confirm Password didn't match")
+      return
+  }
 
 
-  // }
+
+    if(!signupData.password.match(/^(?=.\d)(?=.[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/)){
+      // setLoading(false)
+      return toast.error('Password should contain at least 8 character 1 digit 1 lower case 1 uppercase', {
+        position: "top-right",
+    });
+
+
+
+  }
 
   console.log('sjdhssh');
   
