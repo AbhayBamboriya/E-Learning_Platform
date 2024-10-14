@@ -175,7 +175,7 @@ export const Doubt={
   
   UploadResources:async(id, secureUrl, subject,description,year,branch)=>{
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO upload ( id,url, subject,description,year,branch) VALUES ( ?,?, ?,?,?,?)', [ id,secureUrl, subject,description,year,branch], (err, results) => {
+      connection.query('INSERT INTO upload ( id,url, subject,description,year,branch) VALUES ( ?,?,?,?,?,?)', [ id,secureUrl, subject,description,year,branch], (err, results) => {
         if (err) {
           reject(err);
         } else {

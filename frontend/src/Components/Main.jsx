@@ -182,27 +182,27 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="index1.html">
-                Home
+                {/* Home */}
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="about.html">
-                About
+                {/* About */}
               </a>
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Topics
+                {/* Topics */}
               </a>
               <ul className="dropdown-menu" style={{ backgroundColor: "transparent" }}>
                 <li>
                   <a className="dropdown-item" href="#">
-                    Profile
+                    {/* Profile */}
                   </a>
                 </li>
                 <li>
                   <a className="dropdown-item" href="#" style={{ color: "white" }}>
-                    Profile {/* Fixed incorrect style */}
+                    {/* Profile Fixed incorrect style */}
                   </a>
                 </li>
                 <li>
@@ -210,16 +210,36 @@ const Navbar = () => {
                 </li>
                 <li>
                   <a className="dropdown-item" href="#">
-                    Profile
+                    {/* Profile */}
                   </a>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="contact.html" aria-disabled="true">
-                Contact Us
+                {/* Contact Us */}
               </a>
             </li>
+           
+            {
+              !isLoggedIn && <>
+               <li>
+              <a href="http://localhost:5173/" className="btn btn-dark">Quiz</a>
+            </li>
+                <li>
+              <button onClick={()=>navigate("/loginn")} className='btn btn-dark'>Ask Doubt</button>
+            </li>
+            <li>
+              <button onClick={()=>navigate("/loginn")} className='btn btn-dark'>All Doubt</button>
+            </li>
+            <li>
+              <button onClick={()=>navigate("/loginn")} className='btn btn-dark'>All Resource</button>
+            </li>
+            <li>
+              <button onClick={()=>navigate("/loginn")} className='btn btn-dark'>Upload Resources</button>
+            </li>
+              </>
+            }
           </ul>
          
           <div className="mx-2">

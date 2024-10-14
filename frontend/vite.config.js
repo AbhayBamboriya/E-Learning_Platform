@@ -6,9 +6,12 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',  // Customize the directory for static assets like images
-    sourcemap: true,  // Generate source maps for easier debugging in production
-    minify: 'esbuild',  // Specify the minifier, options are 'esbuild' or 'terser'
+    assetsDir: 'assets',  
+    sourcemap: true,  
+    minify: 'esbuild',  
     chunkSizeWarningLimit: 500,  
+  },
+  server: {
+    port: 3483, 
   }
 })
