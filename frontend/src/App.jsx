@@ -23,16 +23,16 @@ function App() {
           <Route path={`/:register`} element={<Login/>}/>
          
           
-          <Route element={<RequireAuth allowedRoles={["Student"]}/>}>
+          {/* <Route element={<RequireAuth allowedRoles={["Student"]}/>}> */}
             {/* <Route path='/result/:marks/:userId/:totalMarks/:QuizId' element={<Result/>}/> */}
             <Route path='/askDoubt' element={<AskDoubt/>}/>
             <Route path='/allDoubts' element={<AllDoubtes/>}/>
             <Route path='/resource' element={<GetResources/>}/>
             <Route path='/answer/:doubtId' element={<Answer/>}/>
-        </Route>
-        <Route element={<RequireAuth allowedRoles={["teacher"]}/>}>
+        {/* </Route> */}
+        {/* <Route elemen/t={<RequireAuth allowedRoles={["teacher"]}/>}> */}
             <Route path='/upload' element={<Upload/>}/>
-        </Route>
+        {/* </Route> */}
 
         </Routes>
       </>
