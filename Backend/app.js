@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 });
 // for parsing to json data directly
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}))        //it will extract out the query params from url
 app.use(morgan('dev'))  //morgan will track all the access point or to which url the request made at localhost and it will print it in terminal 
 app.use(cors({

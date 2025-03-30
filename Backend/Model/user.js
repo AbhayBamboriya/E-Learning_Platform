@@ -13,7 +13,7 @@ console.log(process.env.DB_PASSWORD);
 console.log(process.env.DB_USER);
 console.log(process.env.DB_NAME);
 
-const dbConfig = {
+ const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -21,7 +21,7 @@ const dbConfig = {
 };
 
 // Function to create a new database connection
-const connection = mysql.createConnection(dbConfig);
+export const connection = mysql.createConnection(dbConfig);
 
 // Establishing the database connection
 connection.connect((err) => {
@@ -45,36 +45,6 @@ connection.query('SELECT * FROM users', (err, results) => {
 });
 
 const User = {
-  getAllUsers: async () => {
-    return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users2', (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-  },
-
-  // Function to get a user by ID
-  getUserById: async (userId) => {
-    return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM users2 WHERE user_id = ?', [userId], (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results[0]); // Return the first result (or undefined if not found)
-        }
-      });
-    });
-  },
-
-  // comparePassword: async (userId) => {
-  //   return await bcrypt.compare(plaintextPassword,encryptPassword)
-  // },
-
-
   comparePassword: async(plaintextPassword,encryptPassword)=>{
     console.log('[asswaod',plaintextPassword);
     // return console.log(encryptPassword);
@@ -122,36 +92,9 @@ const User = {
     });
   },
 
-  // Function to update a user's data by ID
-  updateUser: async (userId, userData) => {
-    const { username, email, password } = userData;
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'UPDATE users SET username = ?, email = ?, password = ? WHERE user_id = ?',
-        [username, email, password, userId],
-        (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(results.affectedRows); // Return the number of affected rows
-          }
-        }
-      );
-    });
-  },
+  
 
-  // Function to delete a user by ID
-  deleteUser: async (userId) => {
-    return new Promise((resolve, reject) => {
-      connection.query('DELETE FROM users WHERE user_id = ?', [userId], (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results.affectedRows); // Return the number of affected rows
-        }
-      });
-    });
-  },
+ 
 };
 
 export const Doubt={
@@ -227,9 +170,9 @@ export const Doubt={
   },
   
   
-  UploadResources:async(teacherName, secureUrl, subject)=>{
+  UploadResources:async(id, secureUrl, subject,description,year,branch)=>{
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO upload (teacherName, url, subject) VALUES (?, ?, ?)', [teacherName, secureUrl, subject], (err, results) => {
+      connection.query('INSERT INTO upload ( id,url, subject,description,year,branch) VALUES ( ?,?,?,?,?,?)', [ id,secureUrl, subject,description,year,branch], (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -238,6 +181,42 @@ export const Doubt={
       });
     });
   },
+
+
+
+  UploadBook:async(data)=>{
+    // console.log();
+    console.log('data is ', data);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO books (year,subject_name, uploader_name,book_name, cloudinary_url) VALUES (?,?,?, ?, ?)', [data.year,data.subjectName, data.uploaderName, data.bookName,data.secureUrl], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+
+  UploadPaper:async(data)=>{
+    // console.log();
+    console.log('data is ', data);
+    
+    return new Promise((resolve, reject) => {
+      connection.query('INSERT INTO question_papers (subject_name,year,cloudinary_url,branch,PaperYear) VALUES (?,?,?,?,?)', [data.subjectName, data.year, data.cloudinaryUrl,data.branch,data.paperYear], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results.affectedRows); // Return the number of affected rows
+        }
+      });
+    });
+  },
+
+
+
+
   GetAllDoubts:async()=>{
     return new Promise((resolve, reject) => {
       connection.query('select * from doubts', (err, results) => {
@@ -248,6 +227,42 @@ export const Doubt={
         }
         console.log('res',results);
         
+      });
+    });
+
+    
+  },
+  GetAllBooks: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT year, subject_name, uploader_name, book_name, cloudinary_url FROM books', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the array of books
+        }
+      });
+    });
+  },
+  GetAllPaper: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT year, subject_name, branch, cloudinary_url,PaperYear FROM question_papers', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); // Return the array of books
+        }
+      });
+    });
+  },
+
+  GetAllNotes: async () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT users.Name,upload.subject,upload.description,upload.year,upload.branch,upload.url FROM users JOIN upload ON users.id = upload.id;', (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results); 
+        }
       });
     });
   }
