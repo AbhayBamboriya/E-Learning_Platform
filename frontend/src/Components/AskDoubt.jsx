@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './style.css'
+// import './style.css'
 import { useDispatch } from 'react-redux';
 import { postDoubt } from '../Redux/Slices/AuthSlice';
 import { toast, ToastContainer } from 'react-toastify';

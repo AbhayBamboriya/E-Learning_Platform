@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- Background circle -->
+  <circle cx="150" cy="100" r="80" fill="#f0f8ff" />
+  
+  <!-- Flowing wave elements -->
+  <path d="M70 100 C100 70, 140 70, 170 100 S240 130, 270 100" stroke="#4682B4" stroke-width="8" fill="none" />
+  <path d="M70 120 C100 90, 140 90, 170 120 S240 150, 270 120" stroke="#5F9EA0" stroke-width="8" fill="none" />
+  <path d="M70 140 C100 110, 140 110, 170 140 S240 170, 270 140" stroke="#6495ED" stroke-width="8" fill="none" />
+  
+  <!-- Book/open page symbol -->
+  <path d="M130 60 L170 60 L170 90 Q150 100, 130 90 Z" fill="#4169E1" />
+  
+  <!-- Text -->
+  <text x="150" y="180" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2F4F4F">EduFlow</text>
+</svg>

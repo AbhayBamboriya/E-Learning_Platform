@@ -1,7 +1,7 @@
 
 // import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import Main from './Components/main'
+import Home from './Components/HomePage'
 import AskDoubt from './Components/AskDoubt'
 import AllDoubtes from './Components/AllDoubtes'
 import Upload from './Components/Upload'
@@ -14,7 +14,7 @@ function App() {
       <>
         
         <Routes>
-          <Route path='/' element={<Main/>}/>
+          <Route path='/' element={<Home/>}/>
           <Route path='/askDoubt' element={<AskDoubt/>}/>
           <Route path='/allDoubts' element={<AllDoubtes/>}/>
           <Route path='/upload' element={<Upload/>}/>
