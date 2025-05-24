@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import image from '../assets/assets/snow.jpg';
+import image from '../assets/snow.jpg';
 import { toast, ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { createAccount, login } from '../Redux/Slices/AuthSlice';

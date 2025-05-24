@@ -63,7 +63,7 @@ const login=async(req,res,next)=>{
             if(!c)  return next (new AppError('Incorrect Password',400))
             console.log('rr');
             
-                const token=await User.generateJWTToken(existingUser.role,existingUser.id,existingUser.name)
+                const token=await User.generateJWTToken(existingUser.role,existingUser.id,existingUser.Name)
                 console.log('token is',token);
                 // console.log('user',User);
                 

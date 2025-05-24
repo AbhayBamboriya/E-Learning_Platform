@@ -54,10 +54,10 @@ const Answer = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {answer.map((a, index) => (
+                    {Array.isArray(answer) && answer.map((a, index) => (
                         <TableRow key={index}>
-                            <TableData>{a.answer}</TableData>
-                            <TableData>{a.teacherName}</TableData>
+                        <TableData>{a.answer}</TableData>
+                        <TableData>{a.teacherName}</TableData>
                         </TableRow>
                     ))}
                 </tbody>

@@ -11,7 +11,8 @@ const AllDoubtes = () => {
         const fetchDoubts = async () => {
             try {
                 const res = await axios.get('http://localhost:5000/doubts/', { withCredentials: true });
-                setDoubts(res.data); // Assuming res.data is an array of doubts
+                console.log('Fetched doubts:', res.data);
+                setDoubts(res.data.data); // Assuming res.data is an array of doubts
             } catch (err) {
                 console.error('Error fetching doubts:', err);
             }
@@ -32,8 +33,8 @@ const AllDoubtes = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {doubts?.Doubts?.length > 0 ? (
-                        doubts?.Doubts?.map((doubt, index) => (
+                    {doubts?.length > 0 ? (
+                        doubts.map((doubt, index) => (
                             <TableRow key={index}>
                                 <TableData>{doubt.title}</TableData>
                                 <TableData>{doubt.description}</TableData>
