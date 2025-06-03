@@ -12,7 +12,7 @@ const AllDoubtes = () => {
             try {
                 const res = await axios.get('http://localhost:5000/doubts/', { withCredentials: true });
                 console.log('Fetched doubts:', res.data);
-                setDoubts(res.data.data); // Assuming res.data is an array of doubts
+                setDoubts(res.data.data);
             } catch (err) {
                 console.error('Error fetching doubts:', err);
             }

@@ -1,3 +1,83 @@
+// import axios from 'axios';
+// import React, { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { toast, ToastContainer } from 'react-toastify';
+// import styled from 'styled-components';
+
+// const Answer = () => {
+//     const { doubtId } = useParams();
+//     const [answer, setAnswer] = useState([]);
+//     const [inputText, setInputText] = useState('');
+
+//     useEffect(() => {
+//         const fetch = async () => {
+//             try {
+//                 const res = await axios.get(`http://localhost:5000/doubts/answer/${doubtId}`);
+//                 setAnswer(res?.data?.result);
+//             } catch (err) {
+//                 console.error('Error fetching answers:', err);
+//             }
+//         };
+//         fetch();
+//     }, [doubtId]);
+
+//     const onSubmit = async () => {
+//         if (inputText === '') {
+//             toast.error('Provide answer for Upload');
+//             return;
+//         }
+//         try {
+//             const response = await axios.post(
+//                 `http://localhost:5000/doubts/${doubtId}/answer`,
+//                 { answer: inputText },
+//                 { withCredentials: true }
+//             );
+
+//             if (response?.data?.success) {
+//                 window.location.reload();
+//                 toast.success('Answer Uploaded Successfully');
+//             }
+//         } catch (error) {
+//             console.error('Error sending data to backend:', error);
+//         }
+//     };
+
+//     return (
+//         <Container>
+//             <ToastContainer />
+//             <Title>Answers</Title>
+//             <Table>
+//                 <thead>
+//                     <TableRow>
+//                         <TableHeader>Answer</TableHeader>
+//                         <TableHeader>Uploaded By</TableHeader>
+//                     </TableRow>
+//                 </thead>
+//                 <tbody>
+//                     {Array.isArray(answer) && answer.map((a, index) => (
+//                         <TableRow key={index}>
+//                         <TableData>{a.answer}</TableData>
+//                         <TableData>{a.teacherName}</TableData>
+//                         </TableRow>
+//                     ))}
+//                 </tbody>
+//             </Table>
+
+//             <InputContainer>
+//                 <Input
+//                     type="text"
+//                     value={inputText}
+//                     onChange={(e) => setInputText(e.target.value)}
+//                     placeholder="Enter your Answer"
+//                 />
+//                 <SubmitButton onClick={onSubmit}>Upload</SubmitButton>
+//             </InputContainer>
+//         </Container>
+//     );
+// };
+
+// export default Answer;
+
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,9 +93,12 @@ const Answer = () => {
         const fetch = async () => {
             try {
                 const res = await axios.get(`http://localhost:5000/doubts/answer/${doubtId}`);
-                setAnswer(res?.data?.result);
+                // Fixed: Changed from res?.data?.result to res?.data?.data
+                setAnswer(res?.data?.data || []);
             } catch (err) {
                 console.error('Error fetching answers:', err);
+                // Set empty array on error to prevent crashes
+                setAnswer([]);
             }
         };
         fetch();
@@ -32,13 +115,17 @@ const Answer = () => {
                 { answer: inputText },
                 { withCredentials: true }
             );
-
+        
             if (response?.data?.success) {
-                window.location.reload();
+                // Instead of reloading the page, refetch the answers
+                const res = await axios.get(`http://localhost:5000/doubts/answer/${doubtId}`);
+                setAnswer(res?.data?.data || []);
+                setInputText(''); // Clear the input field
                 toast.success('Answer Uploaded Successfully');
             }
         } catch (error) {
             console.error('Error sending data to backend:', error);
+            toast.error('Failed to upload answer');
         }
     };
 
@@ -54,12 +141,20 @@ const Answer = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {Array.isArray(answer) && answer.map((a, index) => (
-                        <TableRow key={index}>
-                        <TableData>{a.answer}</TableData>
-                        <TableData>{a.teacherName}</TableData>
+                    {Array.isArray(answer) && answer.length > 0 ? (
+                        answer.map((a, index) => (
+                            <TableRow key={index}>
+                                <TableData>{a.answer}</TableData>
+                                <TableData>{a.teacherName}</TableData>
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableData colSpan="2" style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                                No answers yet. Be the first to answer!
+                            </TableData>
                         </TableRow>
-                    ))}
+                    )}
                 </tbody>
             </Table>
 
@@ -68,7 +163,7 @@ const Answer = () => {
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Enter your Answer"
+                    placeholder="Enter Your Answer"
                 />
                 <SubmitButton onClick={onSubmit}>Upload</SubmitButton>
             </InputContainer>

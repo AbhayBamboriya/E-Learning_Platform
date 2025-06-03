@@ -397,7 +397,7 @@ export const Doubt = {
           if (err) {
             return reject(err);
           } else {
-            console.log('checking result', result);
+            // console.log('checking result', result);
             resolve(result); // Return both answer and teacher's name
           }
         }
@@ -418,12 +418,15 @@ export const Doubt = {
   },
 
   SolveDoubt: async (doubtId, answer, Id) => {
-    console.log('checking detailsffdjfd', doubtId, answer, Id.id);
+    console.log('Inserting answer:');
+    console.log('- doubtId:', doubtId);
+    console.log('- answer:', answer);
+    console.log('- teacher_id:', Id);
 
     return new Promise((resolve, reject) => {
       connection.query(
         'INSERT INTO answers (doubt_id, answer, teacher_id) VALUES (?, ?, ?)',
-        [doubtId, answer, Id.id],
+        [doubtId, answer, Id],
         (err, results) => {
           if (err) {
             reject(err);

@@ -174,7 +174,7 @@ router.get('/Getpdf', isLoggedIn, async (req, res, next) => {
   }
 });
 
-// Answer a Doubt (Only teachers)
+// Answer a Doubt
 router.post('/:id/answer', isLoggedIn, async (req, res, next) => {
   try {
     const doubtId = req.params.id;
@@ -184,9 +184,9 @@ router.post('/:id/answer', isLoggedIn, async (req, res, next) => {
     console.log('user', req.user);
 
     // Optionally check role
-    if (req.user.role !== 'teacher') {
-      return res.status(403).json({ success: false, message: 'Only teachers can answer doubts.' });
-    }
+    // if (req.user.role !== 'teacher') {
+    //   return res.status(403).json({ success: false, message: 'Only teachers can answer doubts.' });
+    // }
 
     const result = await Doubt.SolveDoubt(doubtId, answer, userId);
     res.status(201).json({ success: true, message: 'Answer posted successfully', result });
