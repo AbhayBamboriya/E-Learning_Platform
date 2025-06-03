@@ -487,17 +487,6 @@ const Carousel = () => {
             <p className="text-xl mb-6">
               Technology, Development, and Learning Resources
             </p>
-            <div className="flex space-x-3">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                DSA
-              </button>
-              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                Web Development
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-                AI & ML
-              </button>
-            </div>
           </div>
         </div>
       </div>

@@ -1,173 +1,187 @@
-import React, { useState } from 'react'
-// import './style.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { postDoubt } from '../Redux/Slices/AuthSlice';
 import { toast, ToastContainer } from 'react-toastify';
+import styled from 'styled-components';
+
 const AskDoubt = () => {
     const [doubts, setDoubts] = useState([]);
-    const [topic, setTopic] = useState('');
-    const [doubt, setDoubt] = useState('');
+    const dispatch = useDispatch();
+    const [data, setData] = useState({
+        title: "",
+        description: ""
+    });
 
-    const dispatch=useDispatch()
-    const [data,setData]=useState({
-        title:"",
-        description:""
-    })
-    function handleUserInput(e){
-        const {name,value}=e.target;
-        console.log(name,value);
+    // Fetch doubts when component mounts
+    useEffect(() => {
+        const fetchDoubts = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/doubts/', { withCredentials: true });
+                setDoubts(res.data || []);
+            } catch (err) {
+                console.error('Error fetching doubts:', err);
+                setDoubts([]);
+            }
+        };
+        fetchDoubts();
+    }, []);
+
+    function handleUserInput(e) {
+        const { name, value } = e.target;
         setData({
             ...data,
-            [name]:value
-        })
+            [name]: value
+        });
     }
-    
-    
-    const addDoubt = async() => {
-        console.log('daa is',data);
-        const res=await dispatch(postDoubt(data))
-        console.log('res in posting',res);
-        if(res?.payload?.success) toast.success("Doubt Uploaded Successfully")
-          else toast.error("Some Error Occured")
-        
-    };
 
-    const addComment = (index, commentText) => {
-        if (commentText.trim() === '') {
-            alert('Please enter a comment.');
+    const addDoubt = async () => {
+        if (!data.title.trim() || !data.description.trim()) {
+            toast.error('Please fill in both title and description');
             return;
         }
 
-        const newDoubts = doubts.map((doubtItem, i) => {
-            if (i === index) {
-                return { ...doubtItem, comments: [...doubtItem.comments, commentText] };
+        try {
+            const res = await dispatch(postDoubt(data));
+            if (res?.payload?.success) {
+                toast.success("Doubt Uploaded Successfully");
+                // Clear form
+                setData({ title: "", description: "" });
+                // Refresh doubts list
+                const updatedRes = await axios.get('http://localhost:5000/doubts/', { withCredentials: true });
+                setDoubts(updatedRes.data || []);
+            } else {
+                toast.error("Some Error Occurred");
             }
-            return doubtItem;
-        });
-
-        setDoubts(newDoubts);
+        } catch (error) {
+            console.error('Error posting doubt:', error);
+            toast.error("Failed to post doubt");
+        }
     };
 
     return (
-        <div>
-          <ToastContainer/>
-            <header>
-                <h1>Discussion Forum</h1>
-            </header>
-            <main>
-                <section className="post-form">
-                    <h2>Post Your Doubt</h2>
-                    <input
+        <Container>
+            <ToastContainer />
+            <Title>Doubt Section</Title>
+            
+            {/* Post Form Section */}
+            <FormSection>
+                <FormTitle>Ask Your Doubt</FormTitle>
+                <InputContainer>
+                    <Input
                         type="text"
                         value={data.title}
-                        name='title'
+                        name="title"
                         onChange={handleUserInput}
-                        placeholder="Enter topic..."
+                        placeholder="Enter topic/title..."
                     />
-                    <textarea
-                        rows="3"
+                    <TextArea
+                        rows="4"
                         value={data.description}
-                        name='description'
+                        name="description"
                         onChange={handleUserInput}
-                        placeholder="Enter your doubt..."
-                    ></textarea>
-                    <button onClick={addDoubt}>Post</button>
-                </section>
-                <section className="posts">
-                    {doubts.map((doubtItem, index) => (
-                        <Post
-                            key={index}
-                            doubtItem={doubtItem}
-                            onAddComment={(commentText) => addComment(index, commentText)}
-                        />
-                    ))}
-                </section>
-            </main>
-        </div>
+                        placeholder="Describe your doubt in detail..."
+                    />
+                    <SubmitButton onClick={addDoubt}>Submit</SubmitButton>
+                </InputContainer>
+            </FormSection>
+        </Container>
     );
 };
 
+export default AskDoubt;
 
-const DoubtsTable = () => {
-  const [doubts, setDoubts] = useState([]);
+// Styled Components
+const Container = styled.div`
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
 
-  // Fetch the doubts when the component is mounted
-  useEffect(() => {
-    const fetchDoubts = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/doubts/', { withCredentials: true });
-        setDoubts(res.data); // Assuming res.data is an array of doubts
-      } catch (err) {
-        console.error('Error fetching doubts:', err);
-      }
-    };
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+`;
 
-    fetchDoubts();
-  }, []);
+const Title = styled.h1`
+    text-align: center;
+    color: #495057;
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+`;
 
-  return (
-    <div>
-      <ToastContainer/>
-      <h2>List of Doubts</h2>
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {doubts.length > 0 ? (
-            doubts.map((doubt, index) => (
-              <tr key={index}>
-                <td>{doubt.title}</td>
-                <td>{doubt.description}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="2">No doubts found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+const FormSection = styled.div`
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+`;
 
-const Post = ({ doubtItem, onAddComment }) => {
-    const [comment, setComment] = useState('');
+const FormTitle = styled.h2`
+    color: #495057;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+`;
 
-    const handleAddComment = () => {
-        onAddComment(comment);
-        setComment('');
-    };
+const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+`;
 
-    return (
-        <div className="post">
-            <p className="topic">Topic: {doubtItem.topic}</p>
-            <h3>{doubtItem.doubt}</h3>
-            <div className="comment-section">
-                <h4>Comments:</h4>
-                <div className="comments">
-                    {doubtItem.comments.map((comment, i) => (
-                        <div className="comment" key={i}>
-                            {comment}
-                        </div>
-                    ))}
-                </div>
-                <div className="comment-input">
-                    <textarea
-                        rows="2"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        placeholder="Add a comment..."
-                    ></textarea>
-                    <button onClick={handleAddComment}>Comment</button>
-                </div>
-            </div>
-        </div>
-    );
-}
+const Input = styled.input`
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    transition: border-color 0.3s;
 
-export default AskDoubt
+    &:focus {
+        outline: none;
+        border-color: #0056b3;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+`;
+
+const TextArea = styled.textarea`
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.3s;
+    font-family: inherit;
+
+    &:focus {
+        outline: none;
+        border-color: #0056b3;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+`;
+
+const SubmitButton = styled.button`
+    padding: 12px 30px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    align-self: flex-start;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
