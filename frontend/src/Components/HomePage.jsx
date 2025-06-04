@@ -143,82 +143,37 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-900 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo and Navigation Links */}
+          <div className="flex items-center space-x-8">
             <a
               className="flex-shrink-0 flex items-center text-xl font-bold text-white"
               href="#"
             >
-              <span className="text-red-500">Edu</span>Verse
+              <span className="text-blue-400">Edu</span>Verse
             </a>
-            <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+            <div className="hidden md:flex md:items-center md:space-x-6">
               <a
-                className="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-800"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200"
                 href="#"
               >
-                Home
+                About Us
               </a>
               <a
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                href="#"
-              >
-                About
-              </a>
-              <div className="relative group">
-                <button className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none">
-                  Topics
-                </button>
-                <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Profile
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Settings
-                  </a>
-                  <div className="border-t border-gray-100"></div>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Sign out
-                  </a>
-                </div>
-              </div>
-              <a
-                className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200"
                 href="#"
               >
                 Contact Us
               </a>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="flex md:w-80">
-              <input
-                className="w-full rounded-l-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600"
-                placeholder="Search"
-              />
-              <button className="rounded-r-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700">
-                Search
-              </button>
-            </div>
-            <div className="flex items-center space-x-2">
-              {isLoggedIn ? (
+
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            {!isLoggedIn ? (
+              <>
                 <button
-                  className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-3 rounded-md"
-                  onClick={logout}
-                >
-                  Logout
-                </button>
-              ) : (
-                <button
-                  className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-3 rounded-md"
+                  className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-sm font-medium border border-gray-600 hover:border-gray-500 transition-all duration-200"
                   onClick={() =>
                     document
                       .getElementById("loginModal")
@@ -227,52 +182,61 @@ const Navbar = () => {
                 >
                   Login
                 </button>
-              )}
-              {!isLoggedIn && (
                 <button
-                  className="bg-green-600 hover:bg-green-700 text-white py-1.5 px-3 rounded-md"
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
                   onClick={() =>
                     document
                       .getElementById("signupModal")
                       .classList.remove("hidden")
                   }
                 >
-                  SignUp
+                  Sign Up
                 </button>
-              )}
-
-              {isLoggedIn && (
-                <>
+              </>
+            ) : (
+              <>
+                {role === "teacher" && (
                   <button
                     className="bg-green-600 hover:bg-green-700 text-white py-1.5 px-3 rounded-md"
-                    onClick={() => navigate("/askDoubt")}
+                    onClick={() => navigate("/upload")}
                   >
-                    Ask Doubt
+                    Upload Resources
                   </button>
-                  <button
-                    className="bg-green-600 hover:bg-green-700 text-white py-1.5 px-3 rounded-md"
-                    onClick={() => navigate("/allDoubts")}
-                  >
-                    All Doubts
-                  </button>
-                  <button
-                    className="bg-green-600 hover:bg-green-700 text-white py-1.5 px-3 rounded-md"
-                    onClick={() => navigate("/resource")}
-                  >
-                    Resources
-                  </button>
-                </>
-              )}
-
-              {role === "teacher" && (
+                )}
                 <button
-                  className="bg-green-600 hover:bg-green-700 text-white py-1.5 px-3 rounded-md"
-                  onClick={() => navigate("/upload")}
+                  className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-sm font-medium border border-gray-600 hover:border-gray-500 transition-all duration-200"
+                  onClick={() => navigate("/resource")}
                 >
-                  Upload Resources
+                  Resources
                 </button>
-              )}
-            </div>
+                <button
+                  className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg text-sm font-medium border border-gray-600 hover:border-gray-500 transition-all duration-200"
+                  onClick={() => navigate("/allDoubts")}
+                >
+                  All Doubts
+                </button>
+                <button
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
+                  onClick={() => navigate("/askDoubt")}
+                >
+                  Ask Doubt
+                </button>
+                {role === "teacher" && (
+                  <button
+                    className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
+                    onClick={() => navigate("/upload")}
+                  >
+                    Upload
+                  </button>
+                )}
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
